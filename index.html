@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Исследование эргономики рабочего места студентов</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f9;
+    color: #202b3c;
+}
+.container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 20px;
+}
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,.05);
+}
+h1 { font-size: 27px; }
+h2 { font-size: 22px; }
+p { line-height: 1.6; color: #596579; }
+label { display: block; margin-top: 20px; font-weight: 600; }
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #d9dfeb;
+    border-radius: 8px;
+    font-size: 15px;
+}
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 14px 22px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+.hidden { display: none; }
+.question { padding: 18px 0; border-bottom: 1px solid #edf0f5; }
+.question p { color: #202b3c; font-weight: 600; }
+.option { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-weight: normal; }
+.option input { width: auto; margin: 0; }
+.timer { font-size: 48px; text-align: center; font-weight: bold; margin: 30px; color: #2563eb; }
+.result { background: #eff6ff; border-radius: 12px; padding: 20px; margin-top: 20px; }
+.score { font-size: 35px; font-weight: bold; color: #2563eb; }
+.small { font-size: 13px; color: #8290a3; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<section class="card" id="welcome">
+<h1>Исследование эргономики рабочего места студентов</h1>
+<p>Изучение особенностей организации рабочего пространства при использовании портативных видеодисплейных терминалов в образовательном процессе.</p>
+<p>Исследование состоит из двух этапов: оценка привычных условий работы и повторная оценка после эргономической коррекции.</p>
+
+<label>Код участника</label>
+<input id="participant" placeholder="Например, STUDENT001">
+
+<label>Возраст</label>
+<input id="age" type="number" min="16" max="100">
+
+<label>Курс обучения</label>
+<select id="course">
+<option value="">Выберите курс</option>
+<option>1 курс</option><option>2 курс</option>
+<option>3 курс</option><option>4 курс</option>
+<option>5 курс</option><option>6 курс</option>
+</select>
+
+<label>Основное устройство</label>
+<select id="device">
+<option value="">Выберите устройство</option>
+<option>Ноутбук</option><option>Смартфон</option>
+<option>Планшет</option><option>Несколько устройств</option>
+</select>
+
+<button onclick="start()">Начать исследование</button>
+<p class="small">Участие добровольное. Не указывайте ФИО и контактные данные.</p>
+</section>
+
+<section class="card hidden" id="before">
+<h2>Этап 1. Привычное рабочее место</h2>
+<p>Отвечайте, исходя из того, как вы обычно работаете.</p>
+<div id="beforeQuestions"></div>
+<button onclick="finishBefore()">Завершить первый этап</button>
+</section>
+
+<section class="card hidden" id="instruction">
+<h2>Эргономическая коррекция</h2>
+<h3>Положение спины</h3>
+<p>Сохраняйте физиологическое положение позвоночника. Спина должна иметь опору.</p>
+<h3>Положение головы</h3>
+<p>Голова находится прямо, без выраженного наклона вперёд.</p>
+<h3>Положение рук</h3>
+<p>Плечи расслаблены, локти располагаются приблизительно под углом 90–100 градусов.</p>
+<h3>Положение ног</h3>
+<p>Стопы опираются на пол или подставку.</p>
+<h3>Расположение экрана</h3>
+<p>Экран располагается прямо перед пользователем, верхняя граница — около уровня глаз или немного ниже.</p>
+<h3>Расстояние до экрана</h3>
+<p>Ориентировочно 50–70 см для монитора.</p>
+<h3>Освещение</h3>
+<p>Избегайте бликов и чрезмерного контраста.</p>
+<h3>Рабочая поверхность</h3>
+<p>Используйте устойчивую поверхность для устройства.</p>
+<button onclick="startTimer()">Перейти к таймеру</button>
+</section>
+
+<section class="card hidden" id="timerScreen">
+<h2>Практический этап</h2>
+<p>Работайте в скорректированном положении в течение 25 минут.</p>
+<div class="timer" id="timer">25:00</div>
+<button id="timerButton" onclick="startCountdown()">Начать отсчёт</button>
+<p id="timerStatus"></p>
+</section>
+
+<section class="card hidden" id="after">
+<h2>Этап 2. Повторная оценка</h2>
+<p>Ответьте на вопросы с учётом новых условий работы.</p>
+<div id="afterQuestions"></div>
+<button onclick="finishAfter()">Завершить исследование</button>
+</section>
+
+<section class="card hidden" id="results">
+<h2>Результаты исследования</h2>
+<div class="result">
+<p>Индекс до коррекции</p>
+<div class="score" id="scoreBefore"></div>
+<p>Индекс после коррекции</p>
+<div class="score" id="scoreAfter"></div>
+<p>Изменение индекса</p>
+<div class="score" id="difference"></div>
+</div>
+<h3>Интерпретация</h3>
+<p id="interpretation"></p>
+<div id="comparison"></div>
+<p class="small">Авторская исследовательская оценка, не медицинская диагностика и не валидированная клиническая шкала.</p>
+<p id="saveStatus"></p>
+<button onclick="location.reload()">Новое исследование</button>
+</section>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi_B09_f6u9mWjWnXWMZ1BRxyxBpPBChFnaqX5A87M9qBivXMQytkMDRp8HtBlsT3i/exec";
+
+let participant = {};
+let beforeAnswers = {};
+let afterAnswers = {};
+let seconds = 600;
+let timerInterval = null;
+
+const questions = [
+{id:"posture",title:"1. В каком положении вы обычно работаете?",options:[["Сижу за столом с опорой для спины",3],["Сижу без опоры",2],["Сижу на кровати",1],["Лежу с ноутбуком",0]]},
+{id:"back",title:"2. Как расположена ваша спина?",options:[["Прямая, с опорой",3],["Слегка наклонена",2],["Сильно согнута",1],["Положение постоянно меняется",0]]},
+{id:"head",title:"3. Как расположена голова?",options:[["Прямо",3],["Немного наклонена",2],["Значительно наклонена",1],["Сильно наклонена",0]]},
+{id:"arms",title:"4. Как расположены руки?",options:[["Плечи расслаблены, локти около прямого угла",3],["Немного неудобно",2],["Плечи напряжены",1],["Очень неудобно",0]]},
+{id:"legs",title:"5. Как расположены ноги?",options:[["Стопы полностью опираются",3],["Частично опираются",2],["Ноги скрещены или поджаты",1],["Нет опоры",0]]},
+{id:"screen",title:"6. Где расположен экран?",options:[["Прямо передо мной",3],["Немного ниже глаз",2],["Значительно ниже",1],["Сбоку или под неудобным углом",0]]},
+{id:"distance",title:"7. Каково расстояние до экрана?",options:[["50–70 см",3],["40–49 см",2],["Менее 40 см",1],["Более 70 см",2]]},
+{id:"lighting",title:"8. Как оцениваете освещение?",options:[["Достаточное, без бликов",3],["В целом достаточное",2],["Недостаточное или слишком яркое",1],["Есть выраженные блики",0]]},
+{id:"breaks",title:"9. Как часто вы делаете перерывы?",options:[["Каждые 20–30 минут",3],["Каждый час",2],["Раз в несколько часов",1],["Практически не делаю",0]]},
+{id:"comfort",title:"10. Насколько удобно работать?",options:[["Очень удобно",3],["В целом удобно",2],["Не совсем удобно",1],["Совершенно неудобно",0]]}
+];
+
+function show(id) {
+document.querySelectorAll(".card").forEach(el=>el.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
+window.scrollTo(0,0);
+}
+
+function start() {
+const id=document.getElementById("participant").value.trim();
+const age=Number(document.getElementById("age").value);
+const course=document.getElementById("course").value;
+const device=document.getElementById("device").value;
+if(!id||!age||age<16||age>100||!course||!device) {
+alert("Заполните все поля корректно.");return;
+}
+participant={id,age,course,device};
+renderQuestions("beforeQuestions","before");
+show("before");
+}
+
+function renderQuestions(containerId,stage) {
+const container=document.getElementById(containerId);
+container.innerHTML="";
+questions.forEach(q=>{
+let html='<div class="question"><p>'+q.title+'</p>';
+q.options.forEach(o=>{
+html+=`<label class="option"><input type="radio" name="${stage}_${q.id}" value="${o[1]}">${o[0]}</label>`;
+});
+html+="</div>";
+container.innerHTML+=html;
+});
+}
+
+function collectAnswers(stage) {
+let answers={};
+for(const q of questions) {
+const selected=document.querySelector(`input[name="${stage}_${q.id}"]:checked`);
+if(!selected) {alert("Ответьте на все вопросы.");return null;}
+answers[q.id]=Number(selected.value);
+}
+return answers;
+}
+
+function calculateScore(answers) {
+const total=Object.values(answers).reduce((a,b)=>a+b,0);
+return Math.round(total/30*100);
+}
+
+function finishBefore() {
+const answers=collectAnswers("before");
+if(!answers)return;
+beforeAnswers=answers;
+show("instruction");
+}
+
+function startTimer() {
+seconds=600;
+document.getElementById("timer").textContent="25:00";
+document.getElementById("timerButton").disabled=false;
+document.getElementById("timerButton").textContent="Начать отсчёт";
+document.getElementById("timerButton").onclick=startCountdown;
+document.getElementById("timerStatus").textContent="";
+show("timerScreen");
+}
+
+function startCountdown() {
+if(timerInterval)return;
+document.getElementById("timerButton").disabled=true;
+timerInterval=setInterval(()=>{
+seconds--;
+document.getElementById("timer").textContent=
+String(Math.floor(seconds/60)).padStart(2,"0")+":"+
+String(seconds%60).padStart(2,"0");
+if(seconds<=0) {
+clearInterval(timerInterval);
+timerInterval=null;
+document.getElementById("timerButton").disabled=false;
+document.getElementById("timerButton").textContent="Перейти ко второму этапу";
+document.getElementById("timerButton").onclick=()=>{
+renderQuestions("afterQuestions","after");
+show("after");
+};
+document.getElementById("timerStatus").textContent="Практический этап завершён.";
+}
+},1000);
+}
+
+function finishAfter() {
+const answers=collectAnswers("after");
+if(!answers)return;
+afterAnswers=answers;
+showResults();
+}
+
+async function showResults() {
+const s1=calculateScore(beforeAnswers);
+const s2=calculateScore(afterAnswers);
+const diff=s2-s1;
+document.getElementById("scoreBefore").textContent=s1+"/100";
+document.getElementById("scoreAfter").textContent=s2+"/100";
+document.getElementById("difference").textContent=(diff>0?"+":"")+diff;
+document.getElementById("interpretation").textContent=
+diff>0?"После коррекции индекс повысился.":
+diff<0?"После коррекции индекс снизился.":
+"Индекс не изменился.";
+let comparison="";
+questions.forEach(q=>{
+comparison+=`<p><strong>${q.title}</strong><br>До: ${beforeAnswers[q.id]} балла(ов); после: ${afterAnswers[q.id]} балла(ов).</p>`;
+});
+document.getElementById("comparison").innerHTML=comparison;
+show("results");
+await saveResults(s1,s2);
+}
+
+async function saveResults(s1,s2) {
+const status=document.getElementById("saveStatus");
+status.textContent="Отправка результатов...";
+const payload={
+submittedAt:new Date().toISOString(),
+participant,
+before:beforeAnswers,
+after:afterAnswers,
+scoreBefore:s1,
+scoreAfter:s2
+};
+try {
+await fetch(SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify(payload)
+});
+status.textContent="Запрос отправлен. Проверьте появление записи в Google Таблице.";
+} catch(e) {
+status.textContent="Ошибка отправки данных. Сохраните результаты отдельно.";
+console.error(e);
+}
+}
+</script>
+</body>
+</html>
