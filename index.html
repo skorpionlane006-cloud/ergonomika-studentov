@@ -2,314 +2,861 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Исследование эргономики рабочего места студентов</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гигиеническая оценка рабочего места студента</title>
 <style>
-* { box-sizing: border-box; }
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f3f5f9;
-    color: #202b3c;
-}
-.container {
-    max-width: 850px;
-    margin: 40px auto;
-    padding: 20px;
-}
-.card {
-    background: white;
-    padding: 35px;
-    border-radius: 16px;
-    box-shadow: 0 5px 25px rgba(0,0,0,.05);
-}
-h1 { font-size: 27px; }
-h2 { font-size: 22px; }
-p { line-height: 1.6; color: #596579; }
-label { display: block; margin-top: 20px; font-weight: 600; }
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border: 1px solid #d9dfeb;
-    border-radius: 8px;
-    font-size: 15px;
-}
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 9px;
-    padding: 14px 22px;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 25px;
-}
-.hidden { display: none; }
-.question { padding: 18px 0; border-bottom: 1px solid #edf0f5; }
-.question p { color: #202b3c; font-weight: 600; }
-.option { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-weight: normal; }
-.option input { width: auto; margin: 0; }
-.timer { font-size: 48px; text-align: center; font-weight: bold; margin: 30px; color: #2563eb; }
-.result { background: #eff6ff; border-radius: 12px; padding: 20px; margin-top: 20px; }
-.score { font-size: 35px; font-weight: bold; color: #2563eb; }
-.small { font-size: 13px; color: #8290a3; }
+*{box-sizing:border-box}
+:root{--blue:#2864a5;--dark:#17365d;--bg:#f3f6fa;--line:#dfe6ef;--green:#19734b;--orange:#9a6500;--red:#a43b3b}
+body{margin:0;background:var(--bg);color:#202b3c;font:16px/1.5 Arial,sans-serif}
+main{max-width:900px;margin:25px auto;padding:0 14px 40px}
+.hero,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:23px;margin-bottom:15px}
+.hero{background:linear-gradient(135deg,#17365d,#306ba5);color:white}
+.hero p{color:#e8eff8}
+h1{font-size:27px;margin:0 0 10px}
+h2{font-size:21px;margin-top:0}
+h3{font-size:16px;margin-top:20px}
+p{color:#627186}
+label{display:block;font-weight:600;margin:13px 0 6px}
+input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;background:white}
+input[type=checkbox]{width:auto;margin-right:7px}
+.checkline{display:flex;align-items:flex-start;font-weight:400;gap:5px}
+.checkline input{margin-top:5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+button{border:0;border-radius:9px;padding:12px 19px;background:var(--blue);color:white;font-weight:bold;font-size:15px;cursor:pointer}
+button.secondary{background:#e9eff7;color:#234264}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hidden{display:none!important}
+.notice{padding:12px;background:#eff5fb;border-left:4px solid #6489b5;border-radius:7px;font-size:13px;margin:13px 0;color:#40536b}
+.warning{background:#fff7e8;border-left-color:#d49a2f}
+.small{font-size:12px;color:#718096}
+.code{display:inline-block;padding:9px 12px;background:#edf3fa;border-radius:8px;font-weight:bold}
+.progress{height:8px;background:#e7edf5;border-radius:20px;margin-top:15px;overflow:hidden}
+.progress span{display:block;height:100%;background:#83b8ed;width:0}
+.section-title{border-top:1px solid var(--line);padding-top:15px;margin-top:22px}
+.score-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.score-ring{width:115px;height:115px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) var(--value),#e7edf5 0);position:relative}
+.score-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:white}
+.score-ring span{position:relative;font-size:23px;font-weight:bold}
+.score-big{font-size:42px;font-weight:800;color:var(--dark)}
+.pill{display:inline-block;padding:4px 10px;border-radius:20px;background:#edf2f8;font-size:12px;font-weight:bold}
+.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.map-item,.stat-card{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfcfe}
+.map-item .symbol{font-size:22px}
+.map-item strong{display:block;margin:4px 0}
+.good{color:var(--green)}.mid{color:var(--orange)}.bad{color:var(--red)}
+.criterion{border:1px solid var(--line);border-radius:9px;padding:12px;margin:9px 0}
+.criterion-top{display:flex;justify-content:space-between;gap:10px}
+.bar{height:8px;background:#e8edf4;border-radius:20px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:#3978b9}
+.recommendation{padding:11px;background:#fff9ed;border-left:3px solid #d49a2f;border-radius:7px;margin:8px 0}
+.stat-value{font-size:26px;font-weight:bold;color:var(--dark)}
+footer{font-size:12px;color:#718096;padding:5px}
+@media(max-width:600px){main{margin:10px auto}.hero,.panel{padding:17px}.grid{grid-template-columns:1fr}.map-grid{grid-template-columns:1fr 1fr}.score-big{font-size:36px}}
+@media print{button,footer,.no-print{display:none!important}body{background:white}.panel,.hero{box-shadow:none}}
 </style>
 </head>
 <body>
-<div class="container">
+<main>
 
-<section class="card" id="welcome">
-<h1>Исследование эргономики рабочего места студентов</h1>
-<p>Изучение особенностей организации рабочего пространства при использовании портативных видеодисплейных терминалов в образовательном процессе.</p>
-<p>Исследование состоит из двух этапов: оценка привычных условий работы и повторная оценка после эргономической коррекции.</p>
+<section class="hero">
+<h1>Гигиеническая оценка рабочего места студента</h1>
+<p>Интерактивное исследование эргономики рабочего места при использовании ноутбука и смартфона.</p>
+<div class="progress"><span id="progress"></span></div>
+</section>
 
-<label>Код участника</label>
-<input id="participant" placeholder="Например, STUDENT001">
+<!-- ВВЕДЕНИЕ -->
 
-<label>Возраст</label>
-<input id="age" type="number" min="16" max="100">
+<section class="panel" id="intro">
+<h2>Перед началом исследования</h2>
+<p>Ответь на вопросы о своём обычном рабочем месте. После прохождения анкеты ты получишь индивидуальную оценку эргономичности и рекомендации.</p>
 
-<label>Курс обучения</label>
+<div class="notice warning">
+Не указывай ФИО, телефон, адрес и другие прямые идентификаторы. Участие добровольное. Код участника создаётся автоматически.
+</div>
+
+<div class="notice">
+Данные передаются в исследовательскую Google Таблицу. Вопросы о состоянии зрения необязательны и не влияют на эргономический балл.
+</div>
+
+<div class="grid">
+<div>
+<label for="course">Курс обучения</label>
 <select id="course">
-<option value="">Выберите курс</option>
+<option value="">Выбери курс</option>
 <option>1 курс</option><option>2 курс</option>
 <option>3 курс</option><option>4 курс</option>
 <option>5 курс</option><option>6 курс</option>
+<option>Другое</option><option>Не хочу отвечать</option>
 </select>
+</div>
 
-<label>Основное устройство</label>
+<div>
+<label for="age">Возрастная группа</label>
+<select id="age">
+<option value="">Выбери вариант</option>
+<option>До 18 лет</option>
+<option>18–20 лет</option>
+<option>21–23 года</option>
+<option>24 года и старше</option>
+<option>Не хочу отвечать</option>
+</select>
+</div>
+
+<div>
+<label for="device">Основное устройство</label>
 <select id="device">
-<option value="">Выберите устройство</option>
-<option>Ноутбук</option><option>Смартфон</option>
-<option>Планшет</option><option>Несколько устройств</option>
+<option value="">Выбери устройство</option>
+<option value="laptop">Ноутбук</option>
+<option value="smartphone">Смартфон</option>
+<option value="tablet">Планшет</option>
+<option value="mixed">Несколько устройств</option>
 </select>
-
-<button onclick="start()">Начать исследование</button>
-<p class="small">Участие добровольное. Не указывайте ФИО и контактные данные.</p>
-</section>
-
-<section class="card hidden" id="before">
-<h2>Этап 1. Привычное рабочее место</h2>
-<p>Отвечайте, исходя из того, как вы обычно работаете.</p>
-<div id="beforeQuestions"></div>
-<button onclick="finishBefore()">Завершить первый этап</button>
-</section>
-
-<section class="card hidden" id="instruction">
-<h2>Эргономическая коррекция</h2>
-<h3>Положение спины</h3>
-<p>Сохраняйте физиологическое положение позвоночника. Спина должна иметь опору.</p>
-<h3>Положение головы</h3>
-<p>Голова находится прямо, без выраженного наклона вперёд.</p>
-<h3>Положение рук</h3>
-<p>Плечи расслаблены, локти располагаются приблизительно под углом 90–100 градусов.</p>
-<h3>Положение ног</h3>
-<p>Стопы опираются на пол или подставку.</p>
-<h3>Расположение экрана</h3>
-<p>Экран располагается прямо перед пользователем, верхняя граница — около уровня глаз или немного ниже.</p>
-<h3>Расстояние до экрана</h3>
-<p>Ориентировочно 50–70 см для монитора.</p>
-<h3>Освещение</h3>
-<p>Избегайте бликов и чрезмерного контраста.</p>
-<h3>Рабочая поверхность</h3>
-<p>Используйте устойчивую поверхность для устройства.</p>
-<button onclick="startTimer()">Перейти к таймеру</button>
-</section>
-
-<section class="card hidden" id="timerScreen">
-<h2>Практический этап</h2>
-<p>Работайте в скорректированном положении в течение 25 минут.</p>
-<div class="timer" id="timer">25:00</div>
-<button id="timerButton" onclick="startCountdown()">Начать отсчёт</button>
-<p id="timerStatus"></p>
-</section>
-
-<section class="card hidden" id="after">
-<h2>Этап 2. Повторная оценка</h2>
-<p>Ответьте на вопросы с учётом новых условий работы.</p>
-<div id="afterQuestions"></div>
-<button onclick="finishAfter()">Завершить исследование</button>
-</section>
-
-<section class="card hidden" id="results">
-<h2>Результаты исследования</h2>
-<div class="result">
-<p>Индекс до коррекции</p>
-<div class="score" id="scoreBefore"></div>
-<p>Индекс после коррекции</p>
-<div class="score" id="scoreAfter"></div>
-<p>Изменение индекса</p>
-<div class="score" id="difference"></div>
 </div>
-<h3>Интерпретация</h3>
-<p id="interpretation"></p>
-<div id="comparison"></div>
-<p class="small">Авторская исследовательская оценка, не медицинская диагностика и не валидированная клиническая шкала.</p>
-<p id="saveStatus"></p>
-<button onclick="location.reload()">Новое исследование</button>
-</section>
+
+<div>
+<label for="hours">Время работы с экраном по учёбе за день</label>
+<select id="hours">
+<option value="">Выбери вариант</option>
+<option>Менее 2 часов</option>
+<option>2–4 часа</option>
+<option>4–6 часов</option>
+<option>6–8 часов</option>
+<option>Более 8 часов</option>
+</select>
 </div>
+
+<div>
+<label for="continuous">Продолжительность работы без смены деятельности</label>
+<select id="continuous">
+<option value="">Выбери вариант</option>
+<option>До 30 минут</option>
+<option>30–60 минут</option>
+<option>1–2 часа</option>
+<option>Более 2 часов</option>
+</select>
+</div>
+
+<div>
+<label>Код участника</label>
+<div class="code" id="participantCode"></div>
+<p class="small">Запиши код, чтобы при необходимости найти свою анкету.</p>
+</div>
+</div>
+
+<h3 class="section-title">Дополнительные вопросы о зрении</h3>
+
+<label class="checkline">
+<input type="checkbox" id="visionConsent">
+Я добровольно согласен(на) указать сведения о своём зрении. Этот блок можно пропустить.
+</label>
+
+<div id="visionBlock" class="hidden">
+<div class="grid">
+<div>
+<label for="glasses">Носишь ли ты очки или контактные линзы?</label>
+<select id="glasses">
+<option value="">Выбери вариант</option>
+<option>Постоянно ношу очки</option>
+<option>Использую контактные линзы</option>
+<option>Использую оба варианта</option>
+<option>Иногда использую коррекцию</option>
+<option>Не использую</option>
+<option>Не хочу отвечать</option>
+</select>
+</div>
+
+<div>
+<label for="eyeDisease">Есть ли диагностированные заболевания глаз?</label>
+<select id="eyeDisease">
+<option value="">Выбери вариант</option>
+<option>Да</option>
+<option>Нет</option>
+<option>Не знаю</option>
+<option>Не хочу отвечать</option>
+</select>
+</div>
+
+<div>
+<label for="refraction">Есть ли нарушение зрения?</label>
+<select id="refraction">
+<option value="">Выбери вариант</option>
+<option>Близорукость (минус)</option>
+<option>Дальнозоркость (плюс)</option>
+<option>Астигматизм</option>
+<option>Несколько вариантов</option>
+<option>Нет</option>
+<option>Не знаю</option>
+<option>Не хочу отвечать</option>
+</select>
+</div>
+
+<div>
+<label for="rightEye">Диоптрии правого глаза</label>
+<input id="rightEye" maxlength="15" placeholder="Например: −2,00">
+</div>
+
+<div>
+<label for="leftEye">Диоптрии левого глаза</label>
+<input id="leftEye" maxlength="15" placeholder="Например: −1,50">
+</div>
+</div>
+<p class="small">Указывай значения только из имеющегося рецепта или назначения. Не определяй диоптрии самостоятельно. Эти данные не влияют на оценку рабочего места.</p>
+</div>
+
+<h3 class="section-title">Согласие на участие</h3>
+<label class="checkline">
+<input type="checkbox" id="consent">
+Я ознакомился(ась) с условиями исследования, понимаю добровольность участия и согласен(на) передать ответы под кодом участника.
+</label>
+
+<div class="actions">
+<button type="button" onclick="startSurvey()">Начать тестирование</button>
+</div>
+</section>
+
+<!-- АНКЕТА -->
+
+<section class="panel hidden" id="survey">
+<h2>Оценка рабочего места</h2>
+<p>Выбери один наиболее подходящий вариант ответа.</p>
+
+<form id="surveyForm">
+<div class="grid">
+
+<div>
+<label>1. Где ты чаще всего работаешь?</label>
+<select id="workplace" required>
+<option value="">Выбери ответ</option>
+<option value="desk" data-score="1">За столом на стуле</option>
+<option value="table" data-score="0.5">За столом, но без подходящего стула</option>
+<option value="bed" data-score="0.5">Сижу на кровати</option>
+<option value="sofa" data-score="0.5">На диване</option>
+<option value="lying" data-score="0">Лежу в кровати</option>
+<option value="lap" data-score="0">Устройство находится на коленях</option>
+</select>
+</div>
+
+<div>
+<label>2. Есть ли опора для спины?</label>
+<select id="back" required>
+<option value="">Выбери ответ</option>
+<option value="yes" data-score="1">Да, спина имеет удобную опору</option>
+<option value="sometimes" data-score="0.5">Иногда опираюсь</option>
+<option value="no" data-score="0">Нет, обычно сижу без опоры</option>
+</select>
+</div>
+
+<div>
+<label>3. Как расположены стопы?</label>
+<select id="feet" required>
+<option value="">Выбери ответ</option>
+<option value="yes" data-score="1">Полностью опираются на пол или подставку</option>
+<option value="partial" data-score="0.5">Опираются не полностью</option>
+<option value="no" data-score="0">Поджаты или свисают</option>
+</select>
+</div>
+
+<div>
+<label>4. Как расположена голова и шея?</label>
+<select id="neck" required>
+<option value="">Выбери ответ</option>
+<option value="straight" data-score="1">Голова примерно прямо</option>
+<option value="slight" data-score="0.5">Иногда наклоняю голову</option>
+<option value="low" data-score="0">Долго работаю с выраженным наклоном головы</option>
+</select>
+</div>
+
+<div>
+<label>5. Как расположены плечи и руки?</label>
+<select id="arms" required>
+<option value="">Выбери ответ</option>
+<option value="relaxed" data-score="1">Плечи расслаблены, локти близко к туловищу</option>
+<option value="some" data-score="0.5">Иногда напрягаю плечи или вытягиваю руки</option>
+<option value="tense" data-score="0">Плечи приподняты, руки напряжены</option>
+</select>
+</div>
+
+<div>
+<label>6. Где находится экран?</label>
+<select id="screenPosition" required>
+<option value="">Выбери ответ</option>
+<option value="front" data-score="1">Прямо передо мной</option>
+<option value="slight" data-score="0.5">Немного сбоку</option>
+<option value="side" data-score="0">Постоянно сбоку</option>
+</select>
+</div>
+
+<div>
+<label>7. На какой высоте расположен экран?</label>
+<select id="screenHeight" required>
+<option value="">Выбери ответ</option>
+<option value="good" data-score="1">Верхняя часть экрана примерно на уровне глаз или немного ниже</option>
+<option value="low" data-score="0.5">Экран низко, иногда наклоняю голову</option>
+<option value="verylow" data-score="0">Экран значительно ниже уровня глаз</option>
+<option value="high" data-score="0">Экран слишком высоко</option>
+</select>
+</div>
+
+<div>
+<label>8. Удобно ли расстояние до экрана?</label>
+<select id="distance" required>
+<option value="">Выбери ответ</option>
+<option value="good" data-score="1">Читаю без наклона вперёд и приближения экрана</option>
+<option value="sometimes" data-score="0.5">Иногда приближаюсь или наклоняюсь</option>
+<option value="bad" data-score="0">Часто приближаю экран или наклоняюсь</option>
+</select>
+<p class="small">Для монитора ориентир — примерно длина вытянутой руки. Для смартфона оцени комфорт чтения.</p>
+</div>
+
+<div>
+<label>9. Как оцениваешь освещение?</label>
+<select id="lighting" required>
+<option value="">Выбери ответ</option>
+<option value="good" data-score="1">Достаточное, экран не бликует</option>
+<option value="middle" data-score="0.5">Освещение неравномерное или иногда есть отражения</option>
+<option value="bad" data-score="0">Темно, слишком ярко или есть выраженные блики</option>
+</select>
+</div>
+
+<div>
+<label>10. Как часто ты делаешь перерывы или меняешь деятельность?</label>
+<select id="breaks" required>
+<option value="">Выбери ответ</option>
+<option value="regular" data-score="1">Регулярно делаю перерывы или меняю деятельность</option>
+<option value="sometimes" data-score="0.5">Делаю это время от времени</option>
+<option value="rare" data-score="0">Долго работаю без перерывов</option>
+</select>
+</div>
+</div>
+
+<div id="laptopQuestion" class="hidden">
+<label>11. Как организована работа с ноутбуком?</label>
+<select id="laptopSetup">
+<option value="">Выбери ответ</option>
+<option value="best" data-score="1">Экран приподнят, использую отдельную клавиатуру и мышь</option>
+<option value="partial" data-score="0.5">Использую только подставку или отдельные устройства ввода</option>
+<option value="basic" data-score="0">Работаю на ноутбуке без дополнительных устройств</option>
+</select>
+</div>
+
+<h3 class="section-title">Самочувствие при работе с экраном</h3>
+<p class="small">Можно выбрать несколько ответов. Симптомы не влияют на эргономический процент.</p>
+
+<div class="grid">
+<label class="checkline"><input type="checkbox" name="symptoms" value="Усталость глаз">Усталость глаз</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Сухость или жжение глаз">Сухость или жжение глаз</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Головная боль">Головная боль</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Напряжение шеи или плеч">Напряжение шеи или плеч</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Дискомфорт в спине">Дискомфорт в спине</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Дискомфорт в кистях или запястьях">Дискомфорт в кистях или запястьях</label>
+<label class="checkline"><input type="checkbox" name="symptoms" value="Нет перечисленных ощущений">Нет перечисленных ощущений</label>
+</div>
+
+<div class="actions">
+<button type="submit">Получить мой гигиенический паспорт</button>
+</div>
+</form>
+</section>
+
+<!-- ИТОГОВАЯ ОЦЕНКА -->
+
+<section class="panel hidden" id="results">
+<h2>Твой личный гигиенический паспорт</h2>
+
+<div class="score-row">
+<div class="score-ring" id="scoreRing" style="--value:0%">
+<span id="scoreText">0%</span>
+</div>
+<div>
+<div class="pill" id="profileBadge"></div>
+<div class="score-big" id="scoreNumber">0%</div>
+<p id="scoreDescription"></p>
+<p class="small" id="scoreDetails"></p>
+</div>
+</div>
+
+<div class="notice warning">
+Это авторская ориентировочная оценка соответствия выбранным эргономическим критериям. Она не является медицинской диагностикой или официальной нормативной шкалой.
+</div>
+
+<h3>Карта эргономических факторов</h3>
+<p>Посмотри, какие элементы рабочего места требуют внимания.</p>
+<div class="map-grid" id="map"></div>
+
+<h3>Подробный профиль</h3>
+<div id="criteria"></div>
+
+<h3>Персональные рекомендации</h3>
+<div id="recommendations"></div>
+
+<h3>Зрительная нагрузка и самочувствие</h3>
+<div id="visionResult"></div>
+
+<p class="small">Сведения о зрении и самочувствии не влияют на расчёт процента.</p>
+
+<div class="actions no-print">
+<button onclick="window.print()">Распечатать паспорт</button>
+<button class="secondary" onclick="copyReport()">Скопировать результат</button>
+</div>
+
+<div class="notice" id="sendStatus">Отправка результатов…</div>
+</section>
+
+<!-- СТАТИСТИКА ГРУППЫ -->
+
+<section class="panel" id="groupStats">
+<h2>Статистика студенческой группы</h2>
+<p>Сводные результаты исследования без индивидуальных ответов и сведений о зрении. Статистика станет доступна после накопления минимум 10 анкет.</p>
+
+<div id="statsContent">
+<p class="small">Нажми кнопку, чтобы получить сводную статистику.</p>
+</div>
+
+<div class="actions no-print">
+<button class="secondary" onclick="loadStats()">Обновить статистику</button>
+</div>
+</section>
+
+<footer>
+Методическая основа критериев: рекомендации Health and Safety Executive и OSHA по организации компьютерного рабочего места, положению тела и перерывам.
+<br><br>
+<a href="https://www.hse.gov.uk/msd/dse/good-posture.htm" target="_blank">HSE — положение тела</a> ·
+<a href="https://www.hse.gov.uk/msd/dse/work-routine.htm" target="_blank">HSE — рабочий режим</a> ·
+<a href="https://www.osha.gov/etools/computer-workstations/" target="_blank">OSHA — компьютерное рабочее место</a>
+</footer>
+
+</main>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi_B09_f6u9mWjWnXWMZ1BRxyxBpPBChFnaqX5A87M9qBivXMQytkMDRp8HtBlsT3i/exec";
 
-let participant = {};
-let beforeAnswers = {};
-let afterAnswers = {};
-let seconds = 600;
-let timerInterval = null;
+const participantCode = createCode();
+document.getElementById("participantCode").textContent = participantCode;
 
-const questions = [
-{id:"posture",title:"1. В каком положении вы обычно работаете?",options:[["Сижу за столом с опорой для спины",3],["Сижу без опоры",2],["Сижу на кровати",1],["Лежу с ноутбуком",0]]},
-{id:"back",title:"2. Как расположена ваша спина?",options:[["Прямая, с опорой",3],["Слегка наклонена",2],["Сильно согнута",1],["Положение постоянно меняется",0]]},
-{id:"head",title:"3. Как расположена голова?",options:[["Прямо",3],["Немного наклонена",2],["Значительно наклонена",1],["Сильно наклонена",0]]},
-{id:"arms",title:"4. Как расположены руки?",options:[["Плечи расслаблены, локти около прямого угла",3],["Немного неудобно",2],["Плечи напряжены",1],["Очень неудобно",0]]},
-{id:"legs",title:"5. Как расположены ноги?",options:[["Стопы полностью опираются",3],["Частично опираются",2],["Ноги скрещены или поджаты",1],["Нет опоры",0]]},
-{id:"screen",title:"6. Где расположен экран?",options:[["Прямо передо мной",3],["Немного ниже глаз",2],["Значительно ниже",1],["Сбоку или под неудобным углом",0]]},
-{id:"distance",title:"7. Каково расстояние до экрана?",options:[["50–70 см",3],["40–49 см",2],["Менее 40 см",1],["Более 70 см",2]]},
-{id:"lighting",title:"8. Как оцениваете освещение?",options:[["Достаточное, без бликов",3],["В целом достаточное",2],["Недостаточное или слишком яркое",1],["Есть выраженные блики",0]]},
-{id:"breaks",title:"9. Как часто вы делаете перерывы?",options:[["Каждые 20–30 минут",3],["Каждый час",2],["Раз в несколько часов",1],["Практически не делаю",0]]},
-{id:"comfort",title:"10. Насколько удобно работать?",options:[["Очень удобно",3],["В целом удобно",2],["Не совсем удобно",1],["Совершенно неудобно",0]]}
+const criteriaInfo = [
+{
+id:"workplace",
+name:"Рабочая поверхность и положение тела",
+group:"Положение тела",
+icon:"🪑",
+advice:"По возможности работай за устойчивым столом и на стуле. Избегай длительной работы лёжа или с устройством на коленях."
+},
+{
+id:"back",
+name:"Опора для спины",
+group:"Спина",
+icon:"↗",
+advice:"Используй спинку стула, обеспечь удобную опору для поясницы."
+},
+{
+id:"feet",
+name:"Опора для стоп",
+group:"Ноги",
+icon:"👣",
+advice:"Поставь стопы на пол или устойчивую подставку."
+},
+{
+id:"neck",
+name:"Положение головы и шеи",
+group:"Голова и шея",
+icon:"◉",
+advice:"Подними экран или увеличь размер текста, чтобы не приходилось постоянно наклонять голову."
+},
+{
+id:"arms",
+name:"Положение плеч и рук",
+group:"Руки",
+icon:"↔",
+advice:"Расположи клавиатуру и мышь ближе к себе. Держи плечи расслабленными, а локти — близко к туловищу."
+},
+{
+id:"screenPosition",
+name:"Расположение экрана",
+group:"Экран",
+icon:"▣",
+advice:"Поставь экран прямо перед собой, чтобы не приходилось постоянно поворачивать голову."
+},
+{
+id:"screenHeight",
+name:"Высота экрана",
+group:"Экран",
+icon:"↕",
+advice:"Настрой высоту экрана так, чтобы верхняя часть находилась примерно на уровне глаз или немного ниже."
+},
+{
+id:"distance",
+name:"Комфортное расстояние до экрана",
+group:"Зрительная работа",
+icon:"◌",
+advice:"Подбери расстояние, при котором текст хорошо читается без наклона к экрану."
+},
+{
+id:"lighting",
+name:"Освещение и блики",
+group:"Освещение",
+icon:"☼",
+advice:"Устрани отражения на экране и обеспечь равномерное освещение."
+},
+{
+id:"breaks",
+name:"Перерывы и смена деятельности",
+group:"Режим работы",
+icon:"⏱",
+advice:"Чередуй экранную работу с другими задачами, вставай и меняй положение тела."
+},
+{
+id:"laptopSetup",
+name:"Организация работы с ноутбуком",
+group:"Ноутбук",
+icon:"⌨",
+optional:true,
+advice:"При длительной работе подними экран ноутбука и подключи отдельные клавиатуру и мышь."
+}
 ];
 
-function show(id) {
-document.querySelectorAll(".card").forEach(el=>el.classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
+document.getElementById("visionConsent").addEventListener("change",function(){
+document.getElementById("visionBlock").classList.toggle("hidden",!this.checked);
+});
+
+document.getElementById("device").addEventListener("change",function(){
+const show=this.value==="laptop"||this.value==="mixed";
+document.getElementById("laptopQuestion").classList.toggle("hidden",!show);
+document.getElementById("laptopSetup").required=show;
+});
+
+document.getElementById("surveyForm").addEventListener("submit",finishSurvey);
+
+function createCode(){
+const symbols="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+let result="STU-";
+const bytes=new Uint8Array(7);
+if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(bytes);
+else for(let i=0;i<7;i++)bytes[i]=Math.floor(Math.random()*256);
+for(let i=0;i<7;i++)result+=symbols[bytes[i]%symbols.length];
+return result;
+}
+
+function startSurvey(){
+const fields=["course","age","device","hours","continuous"];
+for(const id of fields){
+if(!document.getElementById(id).value){
+alert("Заполни все основные поля.");
+return;
+}
+}
+if(!document.getElementById("consent").checked){
+alert("Подтверди согласие на участие.");
+return;
+}
+document.getElementById("intro").classList.add("hidden");
+document.getElementById("survey").classList.remove("hidden");
+document.getElementById("progress").style.width="50%";
 window.scrollTo(0,0);
 }
 
-function start() {
-const id=document.getElementById("participant").value.trim();
-const age=Number(document.getElementById("age").value);
-const course=document.getElementById("course").value;
+function getPoints(id){
+const select=document.getElementById(id);
+const option=select.options[select.selectedIndex];
+if(!option||option.dataset.score===undefined)return null;
+return Number(option.dataset.score);
+}
+
+function finishSurvey(event){
+event.preventDefault();
+
+const ids=[
+"workplace","back","feet","neck","arms",
+"screenPosition","screenHeight","distance","lighting","breaks"
+];
+
+const answers={};
+
+for(const id of ids){
+const el=document.getElementById(id);
+if(!el.value){
+alert("Ответь на все основные вопросы.");
+return;
+}
+answers[id]=el.value;
+}
+
 const device=document.getElementById("device").value;
-if(!id||!age||age<16||age>100||!course||!device) {
-alert("Заполните все поля корректно.");return;
+
+if(device==="laptop"||device==="mixed"){
+if(!document.getElementById("laptopSetup").value){
+alert("Ответь на вопрос об организации работы с ноутбуком.");
+return;
 }
-participant={id,age,course,device};
-renderQuestions("beforeQuestions","before");
-show("before");
+answers.laptopSetup=document.getElementById("laptopSetup").value;
+}else{
+answers.laptopSetup="not_applicable";
 }
 
-function renderQuestions(containerId,stage) {
-const container=document.getElementById(containerId);
-container.innerHTML="";
-questions.forEach(q=>{
-let html='<div class="question"><p>'+q.title+'</p>';
-q.options.forEach(o=>{
-html+=`<label class="option"><input type="radio" name="${stage}_${q.id}" value="${o[1]}">${o[0]}</label>`;
-});
-html+="</div>";
-container.innerHTML+=html;
-});
+answers.symptoms=[
+...document.querySelectorAll('input[name="symptoms"]:checked')
+].map(x=>x.value);
+
+if(answers.symptoms.includes("Нет перечисленных ощущений")&&answers.symptoms.length>1){
+alert("Выбери либо отсутствие симптомов, либо конкретные симптомы.");
+return;
 }
 
-function collectAnswers(stage) {
-let answers={};
-for(const q of questions) {
-const selected=document.querySelector(`input[name="${stage}_${q.id}"]:checked`);
-if(!selected) {alert("Ответьте на все вопросы.");return null;}
-answers[q.id]=Number(selected.value);
-}
-return answers;
-}
+const visionConsent=document.getElementById("visionConsent").checked;
+let vision=null;
 
-function calculateScore(answers) {
-const total=Object.values(answers).reduce((a,b)=>a+b,0);
-return Math.round(total/30*100);
+if(visionConsent){
+const requiredVision=["glasses","eyeDisease","refraction"];
+for(const id of requiredVision){
+if(!document.getElementById(id).value){
+alert("Заполни вопросы о зрении или сними согласие с этим блоком.");
+return;
 }
-
-function finishBefore() {
-const answers=collectAnswers("before");
-if(!answers)return;
-beforeAnswers=answers;
-show("instruction");
 }
-
-function startTimer() {
-seconds=600;
-document.getElementById("timer").textContent="25:00";
-document.getElementById("timerButton").disabled=false;
-document.getElementById("timerButton").textContent="Начать отсчёт";
-document.getElementById("timerButton").onclick=startCountdown;
-document.getElementById("timerStatus").textContent="";
-show("timerScreen");
-}
-
-function startCountdown() {
-if(timerInterval)return;
-document.getElementById("timerButton").disabled=true;
-timerInterval=setInterval(()=>{
-seconds--;
-document.getElementById("timer").textContent=
-String(Math.floor(seconds/60)).padStart(2,"0")+":"+
-String(seconds%60).padStart(2,"0");
-if(seconds<=0) {
-clearInterval(timerInterval);
-timerInterval=null;
-document.getElementById("timerButton").disabled=false;
-document.getElementById("timerButton").textContent="Перейти ко второму этапу";
-document.getElementById("timerButton").onclick=()=>{
-renderQuestions("afterQuestions","after");
-show("after");
+vision={
+glasses:document.getElementById("glasses").value,
+eyeDisease:document.getElementById("eyeDisease").value,
+refraction:document.getElementById("refraction").value,
+rightEye:document.getElementById("rightEye").value.trim(),
+leftEye:document.getElementById("leftEye").value.trim()
 };
-document.getElementById("timerStatus").textContent="Практический этап завершён.";
-}
-},1000);
 }
 
-function finishAfter() {
-const answers=collectAnswers("after");
-if(!answers)return;
-afterAnswers=answers;
-showResults();
+const profile=calculateProfile(answers);
+showResults(profile,answers,vision);
+sendData(answers,vision,profile);
 }
 
-async function showResults() {
-const s1=calculateScore(beforeAnswers);
-const s2=calculateScore(afterAnswers);
-const diff=s2-s1;
-document.getElementById("scoreBefore").textContent=s1+"/100";
-document.getElementById("scoreAfter").textContent=s2+"/100";
-document.getElementById("difference").textContent=(diff>0?"+":"")+diff;
-document.getElementById("interpretation").textContent=
-diff>0?"После коррекции индекс повысился.":
-diff<0?"После коррекции индекс снизился.":
-"Индекс не изменился.";
-let comparison="";
-questions.forEach(q=>{
-comparison+=`<p><strong>${q.title}</strong><br>До: ${beforeAnswers[q.id]} балла(ов); после: ${afterAnswers[q.id]} балла(ов).</p>`;
+function calculateProfile(answers){
+let total=0;
+let count=0;
+const results=[];
+
+for(const item of criteriaInfo){
+if(item.optional&&answers[item.id]==="not_applicable")continue;
+const points=getPoints(item.id);
+if(points===null)continue;
+total+=points;
+count++;
+
+const status=points===1?"Соответствует":
+points===0.5?"Частично соответствует":"Требует коррекции";
+
+results.push({...item,points,status});
+}
+
+const percent=count?Math.round(total/count*100):0;
+let title,description;
+
+if(percent>=80){
+title="Высокое соответствие";
+description="Большинство выбранных эргономических критериев соблюдается.";
+}else if(percent>=60){
+title="Частичное соответствие";
+description="Есть факторы, которые желательно скорректировать.";
+}else{
+title="Низкое соответствие";
+description="Выявлено несколько неблагоприятных факторов. Рекомендуется изменить организацию рабочего места.";
+}
+
+return{
+percent,title,description,results,
+good:results.filter(x=>x.points===1).length,
+middle:results.filter(x=>x.points===0.5).length,
+bad:results.filter(x=>x.points===0).length
+};
+}
+
+function safe(s){
+return String(s).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+})[c]);
+}
+
+let reportText="";
+
+function showResults(profile,answers,vision){
+document.getElementById("survey").classList.add("hidden");
+document.getElementById("results").classList.remove("hidden");
+document.getElementById("progress").style.width="100%";
+
+document.getElementById("scoreRing").style.setProperty("--value",profile.percent+"%");
+document.getElementById("scoreText").textContent=profile.percent+"%";
+document.getElementById("scoreNumber").textContent=profile.percent+"%";
+document.getElementById("profileBadge").textContent=profile.title;
+document.getElementById("scoreDescription").textContent=profile.description;
+document.getElementById("scoreDetails").textContent=
+"Соответствует: "+profile.good+"; частично: "+profile.middle+"; требует коррекции: "+profile.bad+".";
+
+const map=document.getElementById("map");
+const list=document.getElementById("criteria");
+
+map.innerHTML="";
+list.innerHTML="";
+
+profile.results.forEach(item=>{
+const cls=item.points===1?"good":item.points===0.5?"mid":"bad";
+
+map.insertAdjacentHTML("beforeend",
+`<div class="map-item">
+<div class="symbol">${item.icon}</div>
+<strong>${safe(item.group)}</strong>
+<span class="${cls}">${item.status}</span>
+</div>`);
+
+list.insertAdjacentHTML("beforeend",
+`<div class="criterion">
+<div class="criterion-top">
+<b>${safe(item.name)}</b>
+<strong class="${cls}">${item.status}</strong>
+</div>
+<div class="bar"><span style="width:${item.points*100}%"></span></div>
+</div>`);
 });
-document.getElementById("comparison").innerHTML=comparison;
-show("results");
-await saveResults(s1,s2);
+
+const recommendations=document.getElementById("recommendations");
+const problems=profile.results.filter(x=>x.points<1);
+
+recommendations.innerHTML=problems.length?
+problems.map((item,i)=>
+`<div class="recommendation"><b>${i+1}. ${safe(item.name)}.</b> ${safe(item.advice)}</div>`
+).join(""):"По выбранным критериям существенных проблем не выявлено. Продолжай соблюдать эргономические рекомендации.";
+
+const symptoms=answers.symptoms.length?answers.symptoms.join(", "):"Не отмечены";
+
+const visionText=vision?
+`Очки/линзы: ${safe(vision.glasses)}. Заболевания глаз: ${safe(vision.eyeDisease)}. Нарушение рефракции: ${safe(vision.refraction)}. Правый глаз: ${safe(vision.rightEye||"Не указано")}. Левый глаз: ${safe(vision.leftEye||"Не указано")}.`
+:"Дополнительный блок о зрении не заполнялся.";
+
+document.getElementById("visionResult").innerHTML=
+`<p>${visionText}</p><p><b>Отмеченные симптомы:</b> ${safe(symptoms)}.</p>`;
+
+reportText=
+"Гигиенический паспорт\n"+
+"Код: "+participantCode+"\n"+
+"Индекс: "+profile.percent+"%\n"+
+"Профиль: "+profile.title+"\n"+
+"Критерии:\n"+
+profile.results.map(x=>x.name+": "+x.status).join("\n")+
+"\nРекомендации:\n"+
+problems.map(x=>x.name+": "+x.advice).join("\n");
+
+window.scrollTo(0,0);
 }
 
-async function saveResults(s1,s2) {
-const status=document.getElementById("saveStatus");
-status.textContent="Отправка результатов...";
+function sendData(answers,vision,profile){
+const status=document.getElementById("sendStatus");
+status.textContent="Отправка результатов в Google Таблицу…";
+
 const payload={
+version:2,
 submittedAt:new Date().toISOString(),
-participant,
-before:beforeAnswers,
-after:afterAnswers,
-scoreBefore:s1,
-scoreAfter:s2
+consentResearch:true,
+consentVision:!!vision,
+participant:{
+code:participantCode,
+course:document.getElementById("course").value,
+ageGroup:document.getElementById("age").value,
+primaryDevice:document.getElementById("device").value,
+dailyScreenTime:document.getElementById("hours").value,
+continuousTime:document.getElementById("continuous").value
+},
+answers:answers,
+vision:vision,
+scorePercent:profile.percent,
+profileLabel:profile.title,
+profile:{
+percent:profile.percent,
+criteria:profile.results
+}
 };
-try {
-await fetch(SCRIPT_URL,{
+
+fetch(SCRIPT_URL,{
 method:"POST",
 mode:"no-cors",
 headers:{"Content-Type":"text/plain;charset=utf-8"},
 body:JSON.stringify(payload)
+})
+.then(()=>{
+status.textContent="Запрос отправлен. Проверь лист «Анкеты_v2» в Google Таблице: там должна появиться новая запись.";
+})
+.catch(error=>{
+status.textContent="Ошибка отправки. Проверь подключение к интернету и адрес Apps Script. Результат можно распечатать.";
+console.error(error);
 });
-status.textContent="Запрос отправлен. Проверьте появление записи в Google Таблице.";
-} catch(e) {
-status.textContent="Ошибка отправки данных. Сохраните результаты отдельно.";
-console.error(e);
 }
+
+function copyReport(){
+if(!reportText)return;
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(reportText)
+.then(()=>alert("Результат скопирован."));
+}else{
+alert("Копирование недоступно. Используй печать паспорта.");
+}
+}
+
+function loadStats(){
+const target=document.getElementById("statsContent");
+target.innerHTML="<p>Загружаем сводные показатели…</p>";
+
+const old=document.getElementById("statsScript");
+if(old)old.remove();
+
+window.receiveErgoStats=function(data){
+if(!data||!data.ok){
+target.innerHTML="<p>Не удалось получить статистику. Возможно, Apps Script ещё не обновлён.</p>";
+return;
+}
+
+if(!data.available){
+target.innerHTML=
+`<div class="notice">Собрано анкет: <b>${Number(data.count)||0}</b>. Для показа статистики требуется минимум ${Number(data.minCount)||10} анкет.</div>`;
+return;
+}
+
+let riskHtml=(data.risks||[]).map(r=>{
+if(r.suppressed)return `<div class="criterion">${safe(r.label)}: недостаточно данных для публикации</div>`;
+return `<div class="criterion">
+<div class="criterion-top"><b>${safe(r.label)}</b><b>${Number(r.percent)}%</b></div>
+<div class="bar"><span style="width:${Number(r.percent)}%"></span></div>
+</div>`;
+}).join("");
+
+let distribution="Категории профиля скрыты для защиты участников.";
+if(data.profileDistribution&&!data.profileDistribution.suppressed){
+distribution=
+"Высокое соответствие: "+data.profileDistribution.high+"%; "+
+"частичное: "+data.profileDistribution.medium+"%; "+
+"низкое: "+data.profileDistribution.low+"%.";
+}
+
+target.innerHTML=
+`<div class="grid">
+<div class="stat-card">
+<div class="small">Количество анкет</div>
+<div class="stat-value">${Number(data.count)}</div>
+</div>
+<div class="stat-card">
+<div class="small">Средний индекс соответствия</div>
+<div class="stat-value">${Number(data.averageScore)}%</div>
+</div>
+</div>
+<h3>Распределение эргономических профилей</h3>
+<p>${distribution}</p>
+<h3>Факторы риска</h3>
+${riskHtml}
+<p class="small">Сведения о зрении и индивидуальные анкеты не включены в эту сводку.</p>`;
+};
+
+const script=document.createElement("script");
+script.id="statsScript";
+script.src=SCRIPT_URL+"?action=stats&callback=receiveErgoStats&_="+Date.now();
+script.onerror=()=>{
+target.innerHTML="<p>Не удалось загрузить статистику. Проверь обновление Code.gs и публикацию Apps Script.</p>";
+};
+document.body.appendChild(script);
 }
 </script>
+
 </body>
 </html>
